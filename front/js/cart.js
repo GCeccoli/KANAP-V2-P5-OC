@@ -59,3 +59,52 @@ function displayCartItem() {
   }}
 }
 displayCartItem();
+
+// Fonction pour montrer la quantité totale
+function getTotalQuantity() {
+  const totalQuantity = document.getElementById("totalQuantity");
+  let total = 0;
+
+  canapLocalStorage.forEach(product => {
+    total += product.quantityKanap
+  })
+  totalQuantity.textContent = total
+}
+getTotalQuantity();
+
+// Fonction pour montrer le prix total
+function getTotalPrice(){
+  const totalPrice = document.getElementById("totalPrice")
+  let total = 0;
+
+  canapLocalStorage.forEach(data => {
+    const urlApi = "http://localhost:3000/api/products/";
+    fetch(urlApi + data.idKanap)
+    .then(res => res.json())
+    .then(product => {
+      const totalUnitPrice = product.price * cartItem.quantityKanap
+      total += totalUnitPrice
+      totalPrice.textContent = total
+    })
+  })
+}
+getTotalPrice();
+
+// Fonction pour supprimer un élément du panier
+function deleteCartItem(event) {
+  const buttonClicked = event.target;
+  const articleToRemove = buttonClicked.closest(".cart__item");
+  const idToRemove = articleToRemove.getAttribute("data-id");
+  const colorToRemove = articleToRemove.getAttribute("data-color");
+
+  canapLocalStorage = canapLocalStorage.filter(
+    (item) => item.idKanap !== idToRemove || item.colorKanap !== colorToRemove
+  );
+
+  updateCart();
+  displayCartItem();
+  getTotalPrice();
+  getTotalQuantity();
+}
+const cartItemsElement = document.querySelector("#cart__items");
+cartItemsElement.addEventListener("click", deleteCartItem);
