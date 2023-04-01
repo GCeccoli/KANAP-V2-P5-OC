@@ -103,8 +103,8 @@ function deleteCartItem(event) {
 
   updateCart();
   displayCartItem();
-  getTotalPrice();
-  getTotalQuantity();
 }
 const cartItemsElement = document.querySelector("#cart__items");
 cartItemsElement.addEventListener("click", deleteCartItem);
+
+
