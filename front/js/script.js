@@ -8,7 +8,6 @@ const displayProducts = document.querySelector("#items");
 fetch(urlApi)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
     for (products of data) {
       // On intègre les éléments de l'api dans le DOM
       const displayProductsHTML = `<a href="./product.html?id=${products._id}">

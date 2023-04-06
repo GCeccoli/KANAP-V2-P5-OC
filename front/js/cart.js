@@ -2,18 +2,19 @@
 let canapLocalStorage = JSON.parse(localStorage.getItem("cart")) || [];
 // console.log(canapLocalStorage);
 
+// On sauvegarde l'url de notrer api dans une variable
+const urlApi = "http://localhost:3000/api/products/";
+
 //Fonction de mise à jour du panier du prix et de la quantité
 function updateCart() {
   // Met à jour le stockage local
   localStorage.setItem("cart", JSON.stringify(canapLocalStorage));
 
   // Met à jour la quantité totale sur la page
-  const totalQuantityElement = document.querySelector("#totalQuantity");
-  totalQuantityElement.innerHTML = getTotalQuantity();
+  document.querySelector("#totalQuantity").innerHTML = getTotalQuantity();
 
   // Met à jour le prix total sur la page
-  const totalPriceElement = document.querySelector("#totalPrice");
-  totalPriceElement.innerHTML = getTotalPrice();
+  document.querySelector("#totalPrice").innerHTML = getTotalPrice();
 }
 
 function callApi() {
@@ -21,7 +22,7 @@ function callApi() {
   const requestsProducts = canapLocalStorage.map(async (cartItem) => {
     try {
       const res = await fetch(
-        "http://localhost:3000/api/products/" + cartItem.idKanap // Création une nouvelle url d'api en utilisant l'ID 'idKanap' et on appelle cette url avec fetch()
+        urlApi + cartItem.idKanap // Création une nouvelle url d'api en utilisant l'ID 'idKanap' et on appelle cette url avec fetch()
       );
       const data = await res.json();
       return data;
@@ -35,7 +36,7 @@ function callApi() {
     .then((products) => {
       products.forEach((product, index) => {
         // On appelle un tableau avec tous les produits ajoutés dans le local storage
-        canapLocalStorage[index].product = product;
+        canapLocalStorage[index].productId = product._id;
       });
       displayCart();
     })
@@ -43,7 +44,8 @@ function callApi() {
 }
 callApi();
 
-function displayCart() {
+async function displayCart() {
+  // On vérifie que le local storage soit plein ou non
   if (canapLocalStorage == 0 || canapLocalStorage === null) {
     const positionEmptyCart = document.getElementById("cart__items");
     const emptyCart = `Votre panier est vide`;
@@ -53,12 +55,20 @@ function displayCart() {
     orderButton.style.backgroundColor = "grey";
     orderButton.style.cursor = "not-allowed";
   } else {
-    document.getElementById("cart__items").innerHTML = "";
+    // Si le local storage est plein affiche les éléments dans le DOM
+    document.getElementById("cart__items").innerHTML = ""; // On vide le DOM
+    // On boucle a travers les élément stockés dans le local storage
     for (cart in canapLocalStorage) {
-      const product = canapLocalStorage[cart].product;
-      document.getElementById(
-        "cart__items"
-      ).innerHTML += `<article class="cart__item" data-id=${canapLocalStorage[cart].idKanap} data-color="${canapLocalStorage[cart].colorKanap}">
+      // On récupère l'ID des produits
+      const productId = canapLocalStorage[cart].productId;
+      // A l'aide de l'url de l'api et de l'id on récupère le détails des produits
+      try {
+        const res = await fetch(urlApi + productId);
+        const product = await res.json();
+        // Une fois les informations reçues du local storage et de l'api on insère nos éléments dans le DOM
+        document.getElementById(
+          "cart__items"
+        ).innerHTML += `<article class="cart__item" data-id=${canapLocalStorage[cart].idKanap} data-color="${canapLocalStorage[cart].colorKanap}">
       <div class="cart__item__img">
           <img src=${product.imageUrl} alt=${product.altTxt}>
           <div class="cart__item__content">
@@ -78,6 +88,9 @@ function displayCart() {
                 </div>
               </div>
       </article>`;
+      } catch (error) {
+        alert(error);
+      }
     }
     deleteCanap();
     changeQuantity();
@@ -129,10 +142,32 @@ function deleteCanap() {
 // Affiche le prix total
 function getTotalPrice() {
   let totalPrice = 0;
-  canapLocalStorage.forEach((item) => {
-    totalPrice += item.product.price * item.quantityKanap;
-  });
-  return totalPrice.toFixed(0);
+
+  for (let i = 0; i < canapLocalStorage.length; i++) {
+    const productId = canapLocalStorage[i].productId;
+    const productPrice = canapLocalStorage[i].productPrice;
+
+    if (productPrice !== undefined) {
+      totalPrice += productPrice * canapLocalStorage[i].quantityKanap;
+    } else {
+      try {
+        fetch(urlApi + productId)
+          .then((res) => res.json())
+          .then((data) => {
+            const price = data.price;
+            canapLocalStorage[i].productPrice = price;
+            totalPrice += price * canapLocalStorage[i].quantityKanap;
+            const totalPriceElement = document.querySelector("#totalPrice");
+            totalPriceElement.innerHTML = totalPrice + " €";
+          });
+      } catch (error) {
+        alert("Erreur : " + error);
+      }
+    }
+  }
+  const totalPriceElement = document.querySelector("#totalPrice");
+  totalPriceElement.innerHTML = totalPrice + " €";
+  return totalPrice;
 }
 
 // Affiche la quantité totale
