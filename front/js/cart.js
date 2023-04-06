@@ -344,7 +344,7 @@ submitBtn.addEventListener("click", (event) => {
       },
     };
 
-    fetch(postUrlApi, postForm) // Appel de l'API
+    fetch(postUrlApi, postForm)
       .then((response) => response.json())
       .then((datas) => {
         // Envoie des informations dans la page confirmation
