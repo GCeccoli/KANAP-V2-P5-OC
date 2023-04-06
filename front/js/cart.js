@@ -227,7 +227,8 @@ firstNameInput.addEventListener("change", () => {
   if (validFirstName(firstNameInput.value) === false) {
     firstNameErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
-    firstNameErrorMsg.innerText = "Ok";
+    firstNameErrorMsg.innerText = "SAISIE VALIDE";
+    firstNameErrorMsg.style.color = "#0a6a2a";
   }
 });
 
@@ -243,7 +244,8 @@ lastNameInput.addEventListener("change", () => {
   if (validLastName(lastNameInput.value) === false) {
     lastNameErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
-    lastNameErrorMsg.innerText = "Ok";
+    lastNameErrorMsg.innerText = "SAISIE VALIDE";
+    lastNameErrorMsg.style.color = "#0a6a2a";
   }
 });
 
@@ -258,14 +260,15 @@ adressInput.addEventListener("change", () => {
   if (valideAdress(adressInput.value) === false) {
     addressErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
-    addressErrorMsg.innerText = "Ok";
+    addressErrorMsg.innerText = "SAISIE VALIDE";
+    addressErrorMsg.style.color = "#0a6a2a"
   }
 });
 
 // Validation de la ville
 let cityInput = document.getElementById("city");
 function validCity(input) {
-  return /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ\s\,\'\-]*$/.test(
+  return /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇ\s\,\'\-]*$/.test(
     input
   );
 }
@@ -273,7 +276,8 @@ cityInput.addEventListener("change", () => {
   if (validCity(cityInput.value) === false) {
     cityErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
-    cityErrorMsg.innerText = "Ok";
+    cityErrorMsg.innerText = "SAISIE VALIDE";
+    cityErrorMsg.style.color = "#0a6a2a"
   }
 });
 
@@ -286,7 +290,8 @@ mailInput.addEventListener("change", () => {
   if (validMailInput(mailInput.value) === false) {
     emailErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
-    emailErrorMsg.innerText = "Ok";
+    emailErrorMsg.innerText = "SAISIE VALIDE";
+    emailErrorMsg.style.color = "#0a6a2a";
   }
 });
 
@@ -353,4 +358,5 @@ submitBtn.addEventListener("click", (event) => {
     return false;
   }
 });
+// Ces fonctions sont appelées au chargement de la page
 window.addEventListener("load", deleteCanap, getTotalPrice, getTotalQuantity);
