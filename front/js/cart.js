@@ -1,6 +1,5 @@
 // Récupère les données de mon stockage local
 let canapLocalStorage = JSON.parse(localStorage.getItem("cart")) || [];
-// console.log(canapLocalStorage);
 
 // On sauvegarde l'url de notrer api dans une variable
 const urlApi = "http://localhost:3000/api/products/";
@@ -99,7 +98,6 @@ async function displayCart() {
     updateCart();
   }
 }
-//displayCart();
 
 // Supprimer un produit du panier
 function deleteCanap() {
@@ -143,30 +141,34 @@ function deleteCanap() {
 function getTotalPrice() {
   let totalPrice = 0;
 
+  // On parcours notre tableau qui contient les produits ajoutés
   for (let i = 0; i < canapLocalStorage.length; i++) {
     const productId = canapLocalStorage[i].productId;
     const productPrice = canapLocalStorage[i].productPrice;
 
+    // Si le prix est bien définit on calcul le prix
     if (productPrice !== undefined) {
       totalPrice += productPrice * canapLocalStorage[i].quantityKanap;
     } else {
+      // Sinon on envoie une requête à l'api pour vérifier le prix et faire le calcul
       try {
         fetch(urlApi + productId)
           .then((res) => res.json())
           .then((data) => {
+            // On extrait le prix de la réponse
             const price = data.price;
+            // On stock le prix pour éviter de refaire une requête pour le même produit
             canapLocalStorage[i].productPrice = price;
             totalPrice += price * canapLocalStorage[i].quantityKanap;
+            // On met à jour notrre affichage
             const totalPriceElement = document.querySelector("#totalPrice");
-            totalPriceElement.innerHTML = totalPrice + " €";
+            totalPriceElement.innerHTML = totalPrice;
           });
       } catch (error) {
         alert("Erreur : " + error);
       }
     }
   }
-  const totalPriceElement = document.querySelector("#totalPrice");
-  totalPriceElement.innerHTML = totalPrice + " €";
   return totalPrice;
 }
 

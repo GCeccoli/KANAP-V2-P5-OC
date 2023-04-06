@@ -4,7 +4,7 @@ const urlApi = "http://localhost:3000/api/products/";
 // On récupère l'élément html avec l'ID items
 const displayProducts = document.querySelector("#items");
 
-// On appel notre API pour récupérer de données
+// On appel notre API pour récupérer les données
 fetch(urlApi)
   .then((res) => res.json())
   .then((data) => {
@@ -23,7 +23,7 @@ fetch(urlApi)
   // Un message d'erreur s'affiche si le serveur est injoignable
   .catch((err) => {
     let errorMessagePosition = document.getElementById("items");
-    let errorMessage = `<h2> La requête serveur a échouée ${err} </h2>`;
+    let errorMessage = `<h2> La requête serveur a échouée ! <br> ${err} </h2>`;
     errorMessagePosition.style.color = "red";
     errorMessagePosition.style.backgroundColor = "white";
     errorMessagePosition.innerHTML = errorMessage;
