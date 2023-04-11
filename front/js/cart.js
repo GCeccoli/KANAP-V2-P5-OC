@@ -261,7 +261,7 @@ adressInput.addEventListener("change", () => {
     addressErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
     addressErrorMsg.innerText = "SAISIE VALIDE";
-    addressErrorMsg.style.color = "#0a6a2a"
+    addressErrorMsg.style.color = "#0a6a2a";
   }
 });
 
@@ -277,7 +277,7 @@ cityInput.addEventListener("change", () => {
     cityErrorMsg.innerText = "SAISIE INVALIDE";
   } else {
     cityErrorMsg.innerText = "SAISIE VALIDE";
-    cityErrorMsg.style.color = "#0a6a2a"
+    cityErrorMsg.style.color = "#0a6a2a";
   }
 });
 
@@ -321,16 +321,13 @@ submitBtn.addEventListener("click", (event) => {
     alert("Vérifier votre formulaire");
   } else if (confirm("Confirmez-vous votre commande ? ") === true) {
     let arrayKanap = [];
-    
-    for(let i = 0; i < canapLocalStorage.length; i++) {
-      let productSelected = canapLocalStorage[i];
 
-      //On récupère l'id et la quantité
-      let idProductSelected = productSelected.idKanap;
-      let quantityProductSelected = productSelected.quantityKanap;
+    for (let productSelected of canapLocalStorage) {
+      let idProductSelected = productSelected.productId;
+      //let quantityProductSelected = productSelected.quantityKanap;
 
-      arrayKanap.push({ id : idProductSelected, quantity: quantityProductSelected})
-    };
+      arrayKanap.push(idKanap = idProductSelected);
+    }
 
     // On récupère les données du formulaire
     let dataOrder = {
