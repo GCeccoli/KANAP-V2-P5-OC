@@ -323,11 +323,10 @@ submitBtn.addEventListener("click", (event) => {
     let arrayKanap = [];
 
     for (let productSelected of canapLocalStorage) {
-      let idProductSelected = productSelected.idKanap;
+      let idProductSelected = productSelected.productId;
 
-      arrayKanap.push(idKanap = idProductSelected);
+      arrayKanap.push(idProductSelected.toString());
     }
-
     // On récupère les données du formulaire
     let dataOrder = {
       contact: {
