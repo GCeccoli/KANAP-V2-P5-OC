@@ -323,8 +323,7 @@ submitBtn.addEventListener("click", (event) => {
     let arrayKanap = [];
 
     for (let productSelected of canapLocalStorage) {
-      let idProductSelected = productSelected.productId;
-      //let quantityProductSelected = productSelected.quantityKanap;
+      let idProductSelected = productSelected.idKanap;
 
       arrayKanap.push(idKanap = idProductSelected);
     }
