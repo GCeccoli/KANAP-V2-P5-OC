@@ -1,5 +1,5 @@
 // On récupère les informations stockées dans le local storage
-localStorage.getItem("cart");
+localStorage.removeItem("cart");
 
 // Récupération de l'id de la commande
 const submitId = new URL(window.location.href);

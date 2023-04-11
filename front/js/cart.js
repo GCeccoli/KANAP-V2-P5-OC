@@ -321,6 +321,16 @@ submitBtn.addEventListener("click", (event) => {
     alert("Vérifier votre formulaire");
   } else if (confirm("Confirmez-vous votre commande ? ") === true) {
     let arrayKanap = [];
+    
+    for(let i = 0; i < canapLocalStorage.length; i++) {
+      let productSelected = canapLocalStorage[i];
+
+      //On récupère l'id et la quantité
+      let idProductSelected = productSelected.idKanap;
+      let quantityProductSelected = productSelected.quantityKanap;
+
+      arrayKanap.push({ id : idProductSelected, quantity: quantityProductSelected})
+    };
 
     // On récupère les données du formulaire
     let dataOrder = {
@@ -349,7 +359,6 @@ submitBtn.addEventListener("click", (event) => {
       .then((datas) => {
         // Envoie des informations dans la page confirmation
         window.location.href = "confirmation.html?orderId=" + datas.orderId;
-        localStorage.setItem("cart", JSON.stringify(canapLocalStorage));
       })
       .catch((error) => {
         alert(error);
